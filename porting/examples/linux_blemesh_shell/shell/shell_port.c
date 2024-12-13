@@ -110,10 +110,12 @@ show_cmd_help(char *cmd, struct streamer *streamer)
     const struct shell_cmd *command;
 
     for (int i = 0; def_commands[i].sc_cmd; i++) {
-        if (cmd) {
+        if (!cmd) {
             command = &def_commands[i];
         } else if (!strcmp(cmd, def_commands[i].sc_cmd)) {
             command = &def_commands[i];
+        } else {
+            continue;
         }
 
         if (command->help) {
@@ -129,13 +131,17 @@ show_cmd_help(char *cmd, struct streamer *streamer)
 int
 shell_exec(int argc, char **argv, struct streamer *streamer)
 {
-    const struct shell_cmd *cmd;
+    const struct shell_cmd *cmd = NULL;
     const char *command = argv[0];
     size_t argc_offset = 0;
     int rc;
 
     if (!strcmp(command, "help")) {
-        return show_cmd_help(NULL, NULL);
+        if( argc >= 2 ) {
+            return show_cmd_help(argv[1], NULL);
+        } else {
+            return show_cmd_help(NULL, NULL);
+        }
     }
 
     for (int i = 0; def_commands[i].sc_cmd; i++) {
