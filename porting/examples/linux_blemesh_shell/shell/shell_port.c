@@ -137,7 +137,11 @@ shell_exec(int argc, char **argv, struct streamer *streamer)
     int rc;
 
     if (!strcmp(command, "help")) {
+<<<<<<< HEAD
         if( argc >= 2 ) {
+=======
+        if (argc >= 2) {
+>>>>>>> fix_sync
             return show_cmd_help(argv[1], NULL);
         } else {
             return show_cmd_help(NULL, NULL);
